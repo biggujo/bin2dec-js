@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css"
+      integrity="sha512-wpPYUAdjBVSE4KJnH1VR1HeZfpl1ub8YT/NKx4PuQ5NmX2tKuGu6U/JRp5y+Y8XG2tV+wKQpNHVUX03MfMFn9Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="./css/main.css" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="calc">
+          <h1 class="title">Binary 2 Decimal calculator</h1>
+          <div class="calc__row calc__row--green">
+            <div class="calc__category">
+              <h2 class="subtitle subtitle--ta-center">Binary number</h2>
+              <input
+                type="text"
+                name="bin"
+                id="input-bin"
+                class="calc__input-text"
+              />
+            </div>
+
+            <div class="calc__category">
+              <h2 class="subtitle subtitle--ta-center">Decimal number</h2>
+              <input
+                type="text"
+                name="bin"
+                id="output-dec"
+                class="calc__input-text"
+              />
+            </div>
+
+            <button type="button" class="calc__btn" id="btn-submit">
+              Calculate
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./js/main.js"></script>
+  </body>
+</html>
