@@ -1,12 +1,18 @@
+const MIN_RADIX = 2;
+const MAX_RADIX = 16;
+
 const inputFieldBinRef = document.getElementById("input-input");
 const outputFieldDecRef = document.getElementById("output-input");
 
 const btnToCalculateRef = document.getElementById("btn-submit");
 
+const isOutputCorrect = false;
+
 const convertToRadix = (number, radixInput, radixOutput) => {
   return parseInt(number, radixInput).toString(radixOutput).toUpperCase();
 };
 
+// * Create DOM dropdown list
 const createDropdownWithRowOfNumbersEl = (
   minNumber,
   maxNumber,
@@ -18,6 +24,7 @@ const createDropdownWithRowOfNumbersEl = (
   dropdownListRef.id = htmlID;
   dropdownListRef.classList.add("dropdown");
 
+  // * List of numbers [minNumber; maxNumber]
   for (let i = minNumber; i <= maxNumber; i++) {
     const optionRadix = document.createElement("option");
     optionRadix.textContent = i;
@@ -31,10 +38,7 @@ const createDropdownWithRowOfNumbersEl = (
   return dropdownListRef;
 };
 
-// * Add dropdowns to choose a number radix
-const minRadix = 2;
-const maxRadix = 16;
-
+// * Create DOM paragraph
 const createParagraphEl = (givenTextContent, classArray) => {
   const paragraphEl = document.createElement("p");
 
@@ -44,24 +48,25 @@ const createParagraphEl = (givenTextContent, classArray) => {
   return paragraphEl;
 };
 
+// * Create dropdowns
 const dropdownMenuInputRadixEl = createDropdownWithRowOfNumbersEl(
-  minRadix,
-  maxRadix,
+  MIN_RADIX,
+  MAX_RADIX,
   2,
   "input-option-radix"
 );
 
-// * Create and render dropdowns
+const dropdownMenuOutputRadixEl = createDropdownWithRowOfNumbersEl(
+  MIN_RADIX,
+  MAX_RADIX,
+  10,
+  "input-option-radix"
+);
+
+// * Render dropdowns
 inputFieldBinRef.before(
   createParagraphEl("Radix:", ["text", "text--right-margin"]),
   dropdownMenuInputRadixEl
-);
-
-const dropdownMenuOutputRadixEl = createDropdownWithRowOfNumbersEl(
-  minRadix,
-  maxRadix,
-  10,
-  "input-option-radix"
 );
 
 outputFieldDecRef.before(
@@ -71,18 +76,21 @@ outputFieldDecRef.before(
 
 // * Add calculation on click
 btnToCalculateRef.addEventListener("click", () => {
-  let inputValue = inputFieldBinRef.value;
+  let inputValue = inputFieldBinRef.value; // let, because there can be slice of minus
+
+  // * Dropdowns
   const radixInput = Number(dropdownMenuInputRadixEl.value);
   const radixOutput = Number(dropdownMenuOutputRadixEl.value);
 
-  const isNegative = inputValue.charAt(0) === "-";
+  const isNegativeGiven = inputValue.charAt(0) === "-";
 
-  if (isNegative) {
+  if (isNegativeGiven) {
     inputValue = inputValue.slice(1);
   }
 
   const result = convertToRadix(inputValue, radixInput, radixOutput);
 
+  // * Check if number is correct
   if (inputValue !== convertToRadix(result, radixOutput, radixInput)) {
     setTimeout(() => {
       outputFieldDecRef.value = "WRONG NUMBER INPUT";
@@ -95,7 +103,12 @@ btnToCalculateRef.addEventListener("click", () => {
     return;
   }
 
-  outputFieldDecRef.value = isNegative ? "-" + result : result;
+  // * Save values
+  outputFieldDecRef.value = result;
+
+  if (isNegativeGiven) {
+    outputFieldDecRef.value = "-" + outputFieldDecRef.value;
+  }
 });
 
 outputFieldDecRef.addEventListener("click", () => {
