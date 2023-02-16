@@ -21,26 +21,40 @@
       <div class="container">
         <div class="calc">
           <h1 class="title">Radix calculator</h1>
-          <div class="calc__row calc__row--green">
-            <div class="calc__category">
-              <h2 class="subtitle subtitle--ta-center">Input</h2>
-              <input
-                type="text"
-                name="bin"
-                id="input-input"
-                class="calc__input-text"
-              />
-            </div>
+          <details class="spoiler">
+            <summary>Main points</summary>
+            <ul>
+              <li>
+                1. Calculator supports radix conversion
+                from&nbsp;2&nbsp;(binary)&nbsp;to&nbsp;16&nbsp;(hexadecimal)
+              </li>
+              <li>2. Only correct numbers are allowed.</li>
+              <li>3. Click on the output to copy the number.</li>
+            </ul>
+          </details>
 
-            <div class="calc__category">
-              <h2 class="subtitle subtitle--ta-center">Output</h2>
-              <input
-                type="text"
-                name="bin"
-                id="output-input"
-                class="calc__input-text"
-                readonly
-              />
+          <div class="calc__row calc__row--green">
+            <div class="flex-row">
+              <div class="calc__category">
+                <h2 class="subtitle subtitle--ta-center">Input</h2>
+                <input
+                  type="text"
+                  name="bin"
+                  id="input-input"
+                  class="calc__input-text"
+                />
+              </div>
+
+              <div class="calc__category">
+                <h2 class="subtitle subtitle--ta-center">Output</h2>
+                <input
+                  type="text"
+                  name="bin"
+                  id="output-input"
+                  class="calc__input-text"
+                  readonly
+                />
+              </div>
             </div>
 
             <button type="button" class="calc__btn" id="btn-submit">
