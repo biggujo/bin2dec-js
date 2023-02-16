@@ -3,13 +3,6 @@ const outputFieldDecRef = document.getElementById("output-input");
 
 const btnToCalculateRef = document.getElementById("btn-submit");
 
-const isStringABinaryNumber = (binaryNumberString) => {
-  // * From start to end, find multiple occurrences of 0 and 1
-  const regex = /^[01]+$/;
-
-  return regex.test(binaryNumberString);
-};
-
 const createDropdownWithRowOfNumbersEl = (
   minNumber,
   maxNumber,
@@ -74,21 +67,27 @@ outputFieldDecRef.before(
 
 // * Add calculation on click
 btnToCalculateRef.addEventListener("click", () => {
-  const inputValue = inputFieldBinRef.value;
+  let inputValue = inputFieldBinRef.value;
   const radixInput = Number(dropdownMenuInputRadixEl.value);
   const radixOutput = Number(dropdownMenuOutputRadixEl.value);
 
-  let result = 0;
+  const isNegative = inputValue.charAt(0) === "-";
+
+  if (isNegative) {
+    inputValue = inputValue.slice(1);
+  }
+
+  if (!parseInt(inputValue, radixInput)) {
+    alert("Wrong number has been put!");
+    return;
+  }
 
   if (radixInput === radixOutput) {
     outputFieldDecRef.value = inputValue;
     return;
   }
 
-  if (radixInput > 10 || radixInput > radixOutput) {
-    result = parseInt(inputValue, radixInput);
-    outputFieldDecRef.value = result.toString(radixOutput);
-  } else {
-    outputFieldDecRef.value = inputValue.toString(radixInput);
-  }
+  const result = parseInt(inputValue, radixInput).toString(radixOutput);
+
+  outputFieldDecRef.value = isNegative ? "-" + result : result;
 });
