@@ -6,8 +6,6 @@ const outputFieldDecRef = document.getElementById("output-input");
 
 const btnToCalculateRef = document.getElementById("btn-submit");
 
-const isOutputCorrect = false;
-
 const convertToRadix = (number, radixInput, radixOutput) => {
   return parseInt(number, radixInput).toString(radixOutput).toUpperCase();
 };
