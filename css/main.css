@@ -11,11 +11,17 @@ button {
   padding-inline: 20px;
 }
 
+.flex-row {
+  display: flex;
+  gap: 20px;
+}
+
 .title {
   margin-block: 12px;
   padding: 0;
 
   font-size: 24px;
+  text-align: center;
 }
 
 .subtitle {
@@ -36,6 +42,17 @@ button {
 
   color: #ffffff;
   font-size: 18px;
+}
+
+.spoiler {
+  max-width: 100%;
+  padding: 15px;
+
+  color: #ffffff;
+
+  background-color: #f08080;
+  border: 2px solid #000000;
+  border-radius: 5px;
 }
 
 .text--right-margin {
@@ -63,11 +80,10 @@ button {
 .calc {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
-  width: fit-content;
+  max-width: min-content;
   margin: 20px;
-  padding: 30px;
+  padding: 50px;
 
   background-color: #e5e5fa;
   border-radius: 5px;
@@ -76,7 +92,6 @@ button {
 .calc__category {
   width: 240px;
 
-  margin-block: 30px;
   padding: 15px;
 
   border: 2px solid #000000;
@@ -85,14 +100,6 @@ button {
 
 .calc__category:focus-within {
   border-color: #ffffff;
-}
-
-.calc__category:first-child {
-  margin-top: 10px;
-}
-
-.calc__category:last-child {
-  margin-bottom: 10px;
 }
 
 .calc__input-text {
@@ -116,7 +123,6 @@ button {
 
 .calc__btn {
   width: 100%;
-  margin: 10px 0;
   padding: 15px;
 
   color: #ffffff;
@@ -131,7 +137,9 @@ button {
 }
 
 .calc__row {
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 30px;
 
   border-radius: 5px;
