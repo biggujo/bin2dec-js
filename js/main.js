@@ -85,7 +85,7 @@ btnToCalculateRef.addEventListener("click", () => {
     return;
   }
 
-  if (radixInput > 10) {
+  if (radixInput > 10 || radixInput > radixOutput) {
     result = parseInt(inputValue, radixInput);
     outputFieldDecRef.value = result.toString(radixOutput);
   } else {
