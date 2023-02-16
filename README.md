@@ -9,5 +9,6 @@ It is a web-based JS-written calculator uses basic HTML+CSS to interact with val
 3. Click on the output to copy the number.
 
 ## To-do:
+- [x] Do input checks
 - [ ] Make history of conversions
 - [ ] Add adaptive view for mobiles and tablets
