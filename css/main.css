@@ -3,6 +3,10 @@ body {
     "Lucida Sans", Arial, sans-serif;
 }
 
+a {
+  color: inherit;
+}
+
 button {
   cursor: pointer;
 }
