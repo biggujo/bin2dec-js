@@ -3,6 +3,10 @@ const outputFieldDecRef = document.getElementById("output-input");
 
 const btnToCalculateRef = document.getElementById("btn-submit");
 
+const convertToRadix = (number, radixInput, radixOutput) => {
+  return parseInt(number, radixInput).toString(radixOutput).toUpperCase();
+};
+
 const createDropdownWithRowOfNumbersEl = (
   minNumber,
   maxNumber,
@@ -77,8 +81,12 @@ btnToCalculateRef.addEventListener("click", () => {
     inputValue = inputValue.slice(1);
   }
 
-  if (!parseInt(inputValue, radixInput)) {
-    alert("Wrong number has been put!");
+  const result = convertToRadix(inputValue, radixInput, radixOutput);
+
+  if (inputValue !== convertToRadix(result, radixOutput, radixInput)) {
+    setTimeout(() => {
+      outputFieldDecRef.value = "WRONG NUMBER INPUT";
+    }, 0);
     return;
   }
 
@@ -87,7 +95,20 @@ btnToCalculateRef.addEventListener("click", () => {
     return;
   }
 
-  const result = parseInt(inputValue, radixInput).toString(radixOutput);
-
   outputFieldDecRef.value = isNegative ? "-" + result : result;
+});
+
+outputFieldDecRef.addEventListener("click", () => {
+  const savedValue = outputFieldDecRef.value;
+
+  if (savedValue) {
+    setTimeout(() => {
+      outputFieldDecRef.value = "COPIED!";
+      navigator.clipboard.writeText(savedValue);
+    }, 0);
+
+    setTimeout(() => {
+      outputFieldDecRef.value = savedValue;
+    }, 1000);
+  }
 });
