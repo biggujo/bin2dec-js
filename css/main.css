@@ -31,6 +31,35 @@ button {
   text-align: center;
 }
 
+.text {
+  display: inline-block;
+
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.text--right-margin {
+  margin-right: 15px;
+}
+
+.dropdown {
+  padding: 5px;
+  height: 40px;
+
+  color: #ffffff;
+
+  background-color: #f08080;
+  border: 2px solid #000000;
+  border-radius: 5px;
+}
+
+.dropdown:active,
+.dropdown:focus {
+  border-color: #ffffff;
+
+  outline: none;
+}
+
 .calc {
   display: flex;
   flex-direction: column;
@@ -68,6 +97,7 @@ button {
 
 .calc__input-text {
   width: 100%;
+  margin-top: 20px;
 
   color: #ffffff;
   font-family: monospace;
