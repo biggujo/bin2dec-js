@@ -11,66 +11,65 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
     <link rel="stylesheet" href="./css/main.css" />
-
     <title>Document</title>
   </head>
   <body>
     <main>
       <div class="container">
-        <div class="calc">
+        <div class="main-block block flex block--primary-color">
           <h1 class="title">Radix calculator</h1>
-          <details class="spoiler">
-            <summary>Information</summary>
-            <ul>
-              <li>
-                1. Calculator supports radix conversion
-                from&nbsp;2&nbsp;(binary)&nbsp;to&nbsp;16&nbsp;(hexadecimal)
-              </li>
-              <li>2. Only correct numbers are allowed.</li>
-              <li>3. Click on the output to copy the number.</li>
 
-              <p>
-                <a href="https://github.com/biggujo/radix-calculator-js"
-                  >GitHub</a
-                >
-              </p>
-            </ul>
-          </details>
-
-          <div class="calc__row calc__row--green">
-            <div class="flex-row">
-              <div class="calc__category">
-                <h2 class="subtitle subtitle--ta-center">Input</h2>
-                <input
-                  type="text"
-                  name="bin"
-                  id="input-input"
-                  class="calc__input-text"
-                />
+          <form class="flex" id="radix-form">
+            <div
+              class="block block--secondary-color block--action"
+              data-js-block-input
+            >
+              <h2 class="subtitle text">Input</h2>
+              <div class="input-pair">
+                <select
+                  id="radix-input-number"
+                  class="text accent-button dropdown"
+                ></select>
+                <input type="text" class="user-input" id="radix-input-input" />
               </div>
+            </div>
 
-              <div class="calc__category">
-                <h2 class="subtitle subtitle--ta-center">Output</h2>
+            <div
+              class="block block--secondary-color block--action"
+              data-js-block-output
+            >
+              <h2 class="subtitle text">Output</h2>
+              <div class="input-pair">
+                <select
+                  id="radix-output-number"
+                  class="text accent-button dropdown"
+                ></select>
                 <input
                   type="text"
-                  name="bin"
-                  id="output-input"
-                  class="calc__input-text"
+                  class="user-input"
+                  id="radix-output-input"
                   readonly
                 />
               </div>
             </div>
-
-            <button type="button" class="calc__btn" id="btn-submit">
-              Calculate
+          </form>
+          <div class="row">
+            <button
+              type="button"
+              id="radix-swap-values"
+              class="text accent-button dropdown button"
+            >
+              Swap
             </button>
+          </div>
+          <div class="row">
+            Valid numbers are allowed. Click to copy. v2.0,
+            <a href="https://github.com/biggujo/radix-calculator-js">GitHub</a>
           </div>
         </div>
       </div>
     </main>
-
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js" type="module"></script>
   </body>
 </html>

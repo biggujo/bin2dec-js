@@ -1,125 +1,138 @@
+const form = document.getElementById("radix-form");
+
+const inputRadixSelectEl = document.getElementById("radix-input-number");
+const outputRadixSelectEl = document.getElementById("radix-output-number");
+
+const inputRadixInputEl = document.getElementById("radix-input-input");
+const outputRadixInputEl = document.getElementById("radix-output-input");
+
+const buttonSwapAllValues = document.getElementById("radix-swap-values");
+
 const MIN_RADIX = 2;
 const MAX_RADIX = 16;
 
-const inputFieldBinRef = document.getElementById("input-input");
-const outputFieldDecRef = document.getElementById("output-input");
+let currentInputRadix = 10;
+let currentOutputRadix = 16;
 
-const btnToCalculateRef = document.getElementById("btn-submit");
-
-const convertToRadix = (number, radixInput, radixOutput) => {
-  return parseInt(number, radixInput).toString(radixOutput).toUpperCase();
+const convertToRadix = ({ number, inRadix, outRadix }) => {
+  return parseInt(number, inRadix).toString(outRadix).toUpperCase();
 };
 
-// * Create DOM dropdown list
-const createDropdownWithRowOfNumbersEl = (
-  minNumber,
-  maxNumber,
-  defaultValue,
-  htmlID
-) => {
-  const dropdownListRef = document.createElement("select");
-
-  dropdownListRef.id = htmlID;
-  dropdownListRef.classList.add("dropdown");
-
-  // * List of numbers [minNumber; maxNumber]
+const addOptions = (selectElement, minNumber, maxNumber) => {
   for (let i = minNumber; i <= maxNumber; i++) {
-    const optionRadix = document.createElement("option");
-    optionRadix.textContent = i;
+    const currentOption = document.createElement("option");
+    currentOption.textContent = i;
 
-    if (i === defaultValue) {
-      optionRadix.selected = "selected";
-    }
-
-    dropdownListRef.appendChild(optionRadix);
+    selectElement.appendChild(currentOption);
   }
-  return dropdownListRef;
 };
 
-// * Create DOM paragraph
-const createParagraphEl = (givenTextContent, classArray) => {
-  const paragraphEl = document.createElement("p");
+const setResult = () => {
+  const MAX_IN_LEN = 13;
 
-  paragraphEl.classList.add(...classArray);
-  paragraphEl.textContent = givenTextContent;
-
-  return paragraphEl;
-};
-
-// * Create dropdowns
-const dropdownMenuInputRadixEl = createDropdownWithRowOfNumbersEl(
-  MIN_RADIX,
-  MAX_RADIX,
-  2,
-  "input-option-radix"
-);
-
-const dropdownMenuOutputRadixEl = createDropdownWithRowOfNumbersEl(
-  MIN_RADIX,
-  MAX_RADIX,
-  10,
-  "input-option-radix"
-);
-
-// * Render dropdowns
-inputFieldBinRef.before(
-  createParagraphEl("Radix:", ["text", "text--right-margin"]),
-  dropdownMenuInputRadixEl
-);
-
-outputFieldDecRef.before(
-  createParagraphEl("Radix:", ["text", "text--right-margin"]),
-  dropdownMenuOutputRadixEl
-);
-
-// * Add calculation on click
-btnToCalculateRef.addEventListener("click", () => {
-  let inputValue = inputFieldBinRef.value; // let, because there can be slice of minus
-
-  // * Dropdowns
-  const radixInput = Number(dropdownMenuInputRadixEl.value);
-  const radixOutput = Number(dropdownMenuOutputRadixEl.value);
-
-  const isNegativeGiven = inputValue.charAt(0) === "-";
-
-  if (isNegativeGiven) {
-    inputValue = inputValue.slice(1);
-  }
-
-  const result = convertToRadix(inputValue, radixInput, radixOutput);
-
-  // * Check if number is correct
-  if (inputValue !== convertToRadix(result, radixOutput, radixInput)) {
-    setTimeout(() => {
-      outputFieldDecRef.value = "WRONG NUMBER INPUT";
-    }, 0);
+  if (inputRadixInputEl.value === "") {
+    outputRadixInputEl.value = "";
     return;
   }
 
-  if (radixInput === radixOutput) {
-    outputFieldDecRef.value = inputValue;
+  if (inputRadixInputEl.length > MAX_IN_LEN) {
+    inputRadixInputEl.value = inputRadixInputEl.value.slice(0, MAX_IN_LEN);
+  }
+
+  const originalValue = inputRadixInputEl.value;
+
+  const resultNumber = convertToRadix({
+    number: originalValue,
+    inRadix: currentInputRadix,
+    outRadix: currentOutputRadix,
+  });
+
+  const revertedNumber = convertToRadix({
+    number: resultNumber,
+    inRadix: currentOutputRadix,
+    outRadix: currentInputRadix,
+  });
+
+  if (revertedNumber !== originalValue) {
+    outputRadixInputEl.value = "---";
     return;
   }
 
-  // * Save values
-  outputFieldDecRef.value = result;
-
-  if (isNegativeGiven) {
-    outputFieldDecRef.value = "-" + outputFieldDecRef.value;
+  if (revertedNumber === originalValue) {
+    outputRadixInputEl.value = resultNumber;
   }
+};
+
+const updateRadixValues = () => {
+  inputRadixSelectEl.value = currentInputRadix;
+  outputRadixSelectEl.value = currentOutputRadix;
+};
+
+const handleRadixChange = (event) => {
+  event.currentTarget.blur();
+
+  setResult();
+};
+
+addOptions(inputRadixSelectEl, MIN_RADIX, MAX_RADIX);
+addOptions(outputRadixSelectEl, MIN_RADIX, MAX_RADIX);
+
+updateRadixValues();
+
+inputRadixSelectEl.addEventListener("change", handleRadixChange);
+outputRadixSelectEl.addEventListener("change", handleRadixChange);
+
+inputRadixSelectEl.addEventListener("change", () => {
+  currentInputRadix = inputRadixSelectEl.value;
+
+  setResult();
 });
 
-outputFieldDecRef.addEventListener("click", () => {
-  const savedValue = outputFieldDecRef.value;
+outputRadixSelectEl.addEventListener("change", () => {
+  currentOutputRadix = outputRadixSelectEl.value;
 
-  if (savedValue) {
+  setResult();
+});
+
+inputRadixInputEl.addEventListener("input", setResult);
+
+// Autofocus input
+
+document
+  .querySelector("[data-js-block-input]")
+  .addEventListener("click", () => {
+    if (document.activeElement !== inputRadixSelectEl) {
+      inputRadixInputEl.focus();
+    }
+  });
+
+outputRadixInputEl.addEventListener("click", () => {
+  const savedValue = outputRadixInputEl.value;
+
+  if (!savedValue.includes("-") && savedValue.length > 0) {
     setTimeout(() => {
-      outputFieldDecRef.value = "COPIED!";
+      outputRadixInputEl.value = "COPIED!";
       navigator.clipboard.writeText(savedValue);
     }, 0);
 
     setTimeout(() => {
-      outputFieldDecRef.value = savedValue;
+      outputRadixInputEl.value = savedValue;
     }, 1000);
   }
+
+  outputRadixInputEl.blur();
+});
+
+buttonSwapAllValues.addEventListener("click", (event) => {
+  event.currentTarget.blur();
+
+  let tmp = currentInputRadix;
+  currentInputRadix = currentOutputRadix;
+  currentOutputRadix = tmp;
+
+  updateRadixValues();
+
+  tmp = inputRadixInputEl.value;
+  inputRadixInputEl.value = outputRadixInputEl.value;
+  outputRadixInputEl.value = tmp;
 });
