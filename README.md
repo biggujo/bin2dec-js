@@ -11,4 +11,4 @@ It is a web-based JS-written calculator uses basic HTML+CSS to interact with val
 ## To-do:
 - [x] Do input checks
 - [ ] Make history of conversions
-- [ ] Add adaptive view for mobiles and tablets
+- [x] Add adaptive view for mobiles and tablets
