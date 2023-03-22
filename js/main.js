@@ -8,13 +8,29 @@ const outputRadixInputEl = document.getElementById("radix-output-input");
 
 const buttonSwapAllValues = document.getElementById("radix-swap-values");
 
+const saveList = document.querySelector(".history");
+const buttonClearHistory = document.getElementById("clear-history");
+
+const buttonCalculate = document.getElementById("calculate");
+
+const LOCALSTORAGE_KEY = "history";
+
+let history = [];
+
 const MIN_RADIX = 2;
 const MAX_RADIX = 16;
 
 let currentInputRadix = 10;
 let currentOutputRadix = 16;
 
-const convertToRadix = ({ number, inRadix, outRadix }) => {
+let inputValue;
+let outputValue;
+
+const convertToRadix = ({
+  number,
+  inRadix,
+  outRadix,
+}) => {
   return parseInt(number, inRadix).toString(outRadix).toUpperCase();
 };
 
@@ -39,27 +55,36 @@ const setResult = () => {
     inputRadixInputEl.value = inputRadixInputEl.value.slice(0, MAX_IN_LEN);
   }
 
-  const originalValue = inputRadixInputEl.value;
+  inputValue = inputRadixInputEl.value;
 
-  const resultNumber = convertToRadix({
-    number: originalValue,
+  outputValue = convertToRadix({
+    number: inputValue,
     inRadix: currentInputRadix,
     outRadix: currentOutputRadix,
   });
 
   const revertedNumber = convertToRadix({
-    number: resultNumber,
+    number: outputValue,
     inRadix: currentOutputRadix,
     outRadix: currentInputRadix,
   });
 
-  if (revertedNumber !== originalValue) {
+  if (revertedNumber !== inputValue) {
     outputRadixInputEl.value = "---";
     return;
   }
 
-  if (revertedNumber === originalValue) {
-    outputRadixInputEl.value = resultNumber;
+  history.push({
+    inNum: inputValue,
+    inBase: currentInputRadix,
+    outNum: outputValue,
+    outBase: currentOutputRadix,
+  });
+
+  saveHistory();
+
+  if (revertedNumber === inputValue) {
+    outputRadixInputEl.value = outputValue;
   }
 };
 
@@ -73,6 +98,9 @@ const handleRadixChange = (event) => {
 
   setResult();
 };
+
+loadHistory();
+renderHistory();
 
 addOptions(inputRadixSelectEl, MIN_RADIX, MAX_RADIX);
 addOptions(outputRadixSelectEl, MIN_RADIX, MAX_RADIX);
@@ -94,7 +122,11 @@ outputRadixSelectEl.addEventListener("change", () => {
   setResult();
 });
 
-inputRadixInputEl.addEventListener("input", setResult);
+buttonCalculate.addEventListener("click", () => {
+  setResult();
+  saveHistory();
+  renderHistory();
+});
 
 // Autofocus input
 
@@ -136,3 +168,48 @@ buttonSwapAllValues.addEventListener("click", (event) => {
   inputRadixInputEl.value = outputRadixInputEl.value;
   outputRadixInputEl.value = tmp;
 });
+
+buttonClearHistory.addEventListener("click", () => {
+  localStorage.clear();
+  renderHistory();
+});
+
+function loadHistory() {
+  const historyResult = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
+  if (historyResult !== null) {
+    history = historyResult;
+  }
+}
+
+function saveHistory() {
+  if (outputValue === "---") {
+    return;
+  }
+  
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(history));
+}
+
+function renderHistory() {
+  if (history.length === 0) {
+    return;
+  }
+
+  let historyLength = history.length;
+  let resultList = [];
+
+  console.log(history);
+
+  for (let i = historyLength - 1; i >= 0; i--) {
+    console.log(history[i]);
+    const {
+      inNum,
+      inBase,
+      outNum,
+      outBase,
+    } = history[i];
+    resultList.push(`<li>${inNum}<sub>${inBase}</sub> => 
+      ${outNum}<sub>${outBase}</sub></li>`);
+  }
+
+  saveList.innerHTML = resultList.join("");
+}

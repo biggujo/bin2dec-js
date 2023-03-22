@@ -62,11 +62,28 @@
           <div class="row">
             <button
               type="button"
+              id="calculate"
+              class="text accent-button dropdown button"
+            >
+              Calculate
+            </button>
+            <button
+              type="button"
               id="radix-swap-values"
               class="text accent-button dropdown button"
             >
               Swap
             </button>
+            <button
+              type="button"
+              id="clear-history"
+              class="text accent-button dropdown button"
+            >
+              Clear history
+            </button>
+          </div>
+          <div><h2>History:</h2>
+            <ul class="history"></ul>
           </div>
           <div class="row">
             Valid numbers are allowed. Click to copy. v2.0,
@@ -75,6 +92,6 @@
         </div>
       </div>
     </main>
-    <script src="./js/main.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
   </body>
 </html>
